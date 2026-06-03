@@ -104,7 +104,15 @@ Edit variabel CSS di `:root` pada file `src/styles/global.css`:
   --primary: #FC9F21;            /* Warna aksen Amber */
   --bg: #0B080C;                 /* Latar belakang gelap */
   --text: #F5F5F5;               /* Warna teks utama */
-  --font-primary: 'Manrope', sans-serif;
+  
+ /* Formal Corporate Typography System */
+  --font-primary: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-accent: 'Bodoni Moda', serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-stack: 'Stack Sans Notch', sans-serif;
+  --font-faustina: 'Faustina', serif;
+  --font-slabo: 'Slabo 27px', serif;
 }
 ```
 
