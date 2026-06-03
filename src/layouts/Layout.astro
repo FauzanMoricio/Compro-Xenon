@@ -1,0 +1,174 @@
+---
+import "../styles/global.css";
+import Preloader from "../components/common/Preloader.astro";
+import Footer from "../components/common/Footer.astro";
+import Breadcrumbs from "../components/common/Breadcrumbs.astro";
+import ScrollToTop from "../components/common/ScrollToTop.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Premium Company Profile" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" href="/images/logo2.png" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={Astro.url.href} />
+		<slot name="head" />
+		<title>{title}</title>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL('/og-image.png', Astro.url)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url.href} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL('/og-image.png', Astro.url)} />
+
+		<!-- Mobile Theme Color -->
+		<meta name="theme-color" content="#080c14" />
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Poppins:wght@300;400;500;600;700;800&family=Stack+Sans+Notch:wght@400;500;600;700&family=Faustina:wght@400;500;600;700&family=Slabo+27px&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<Preloader />
+		{Astro.url.pathname !== "/" && <Breadcrumbs />}
+		<slot />
+		<ScrollToTop />
+		<Footer />
+
+		<script>
+			import Lenis from "lenis";
+			import { gsap } from "gsap";
+			import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			// Initialize Lenis with optimized settings
+			const lenis = new Lenis({
+				duration: 1.2,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				smoothWheel: true,
+			});
+
+			// @ts-ignore
+			window.lenis = lenis; // Global access
+
+			// Connect Lenis to ScrollTrigger
+			lenis.on("scroll", ScrollTrigger.update);
+
+			// Optimized RAF loop
+			function raf(time: number) {
+				lenis.raf(time);
+				requestAnimationFrame(raf);
+			}
+			requestAnimationFrame(raf);
+
+			// Helper to wait for all images
+			const waitForImages = () => {
+				const images = Array.from(document.images);
+				const promises = images.map((img) => {
+					if (img.complete) return Promise.resolve();
+					return new Promise((resolve) => {
+						img.addEventListener("load", resolve);
+						img.addEventListener("error", resolve);
+					});
+				});
+				return Promise.all(promises);
+			};
+
+			const runOnLoad = () => {
+				Promise.all([document.fonts.ready, waitForImages()]).then(
+					() => {
+						setTimeout(() => {
+							ScrollTrigger.refresh();
+						}, 500); // Final settlement delay
+					},
+				);
+
+				// Handle URL Hashes (e.g., returning from /news detail to /#news)
+				if (window.location.hash) {
+					const target = document.querySelector(window.location.hash);
+					if (target) {
+						// CRITICAL: Refresh GSAP first to know actual positions
+						ScrollTrigger.refresh();
+						
+						setTimeout(() => {
+							lenis.scrollTo(target as HTMLElement, {
+								offset: -20, 
+								duration: 2,
+								immediate: false,
+								lock: true, // Lock temporary to prevent jumping
+							});
+						}, 1000); 
+					}
+				}
+			};
+
+			if (document.readyState === "complete") {
+				runOnLoad();
+			} else {
+				window.addEventListener("load", runOnLoad);
+			}
+
+			// Intercept local anchor clicks for smooth scrolling
+			document.addEventListener("click", (e) => {
+				const target = e.target as HTMLElement;
+				const anchor = target.closest("a");
+
+				if (anchor && anchor.hash && anchor.hash !== "#") {
+					try {
+						const url = new URL(anchor.href);
+						// If navigating to an anchor on the current page
+						if (
+							url.origin === window.location.origin &&
+							url.pathname === window.location.pathname
+						) {
+							const scrollTarget = document.querySelector(
+								anchor.hash,
+							);
+							if (scrollTarget) {
+								e.preventDefault();
+								lenis.scrollTo(scrollTarget as HTMLElement, {
+									duration: 2.5,
+									easing: (t) =>
+										Math.min(
+											1,
+											1.001 - Math.pow(2, -10 * t),
+										),
+								});
+								history.pushState(null, "", anchor.hash);
+							}
+						}
+					} catch (err) {
+						// Ignore invalid URLs
+					}
+				}
+			});
+
+			// Ensure ScrollTrigger is refreshed on orientation change or large resize
+			window.addEventListener("resize", () => {
+				ScrollTrigger.refresh();
+			});
+		</script>
+	</body>
+</html>

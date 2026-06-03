@@ -1,0 +1,456 @@
+---
+import { services } from "../../data/services";
+---
+
+<section id="services" class="services-container">
+  <!-- Intro -->
+  <div class="intro-section">
+    <div class="container interactive-intro">
+      <div class="button-wrapper">
+        <button id="anim-chars" class="btn-toggle active">Precision</button>
+        <button id="anim-words" class="btn-toggle">Strategy</button>
+        <button id="anim-lines" class="btn-toggle">Impact</button>
+      </div>
+      <div class="split-text-area">
+        Enterprise AI success depends on precision. We reject generic solutions, building high-precision data integrations with 95%+ OCR accuracy, military-grade security protection, and algorithms custom-trained for your unique workflows.
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Sections -->
+  {
+    services.map((service, i) => (
+      <div class="vertical-section" id={`section-${service.slug}`}>
+        <div
+          class={`lateral-panel static-panel ${i % 2 !== 0 ? "order-2" : ""}`}
+        >
+          <h1 class="service-name">{service.title}</h1>
+          <div class="image-wrapper gpu-accel">
+            <img
+              src={service.gallery[0]}
+              alt={service.title}
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <div
+          class={`lateral-panel scrolling-panel ${i % 2 !== 0 ? "order-1" : ""}`}
+        >
+          <div class="large-child">
+            <div class="content-block">
+              <h2 class="service-sub-title">Vision & Approach</h2>
+              <p>{service.fullDesc}</p>
+            </div>
+
+            <div class="content-block">
+              <h2 class="service-sub-title">Core Expertise</h2>
+              <ul class="list">
+                {service.features.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="content-block">
+              <h2 class="service-sub-title">Strategic Value</h2>
+              <p>Metrics and advantages obtained:</p>
+              <ul class="list">
+                {service.benefits.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="content-block">
+              <h2 class="service-sub-title">Final Note</h2>
+              <p>
+                {service.longDesc ||
+                  "This is placeholder text meant to help get a sense of spacing, rhythm, and overall layout."}
+              </p>
+            </div>
+
+            <div class="content-block" style="margin-top: -2rem;">
+              <a href="/services" class="read-more">
+                View All Services <span style="font-family: monospace;">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .services-container {
+    padding-bottom: var(--section-spacing);
+  }
+
+  .intro-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg);
+    perspective: 1000px;
+    padding: 20px 0 var(--section-spacing);
+  }
+
+  .interactive-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .button-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-toggle {
+    padding: 0.8rem 2rem;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 100px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-toggle:hover {
+    background: var(--primary);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(252, 159, 33, 0.3);
+  }
+
+  .btn-toggle.active {
+    background: var(--primary);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(252, 159, 33, 0.5);
+  }
+
+  .split-text-area {
+    font-family: var(--font-stack);
+    color: #dddd;
+    font-size: clamp(1.5rem, 4.5vw, 3.2rem);
+    line-height: 1.35;
+    text-align: center;
+    max-width: 1100px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    padding: 0 var(--container-padding);
+  }
+
+  .scroll-prompt {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    opacity: 0.4;
+    margin-top: 2rem;
+  }
+
+  .accent {
+    color: var(--primary);
+  }
+
+  /* Exactly as per user's lateral split */
+  .vertical-section {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    font-size: 1.125rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .lateral-panel {
+    width: 50%;
+    height: 100vh;
+    padding: 0 4vw 0 4vw; /* Removed top padding from here */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .static-panel {
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg);
+    padding-top: 120px; /* Internal content alignment */
+  }
+
+  .scrolling-panel {
+    background-color: var(--bg);
+    overflow: hidden;
+    /* Create a literal gap at the top for the navbar */
+    padding-top: 120px;
+    /* Premium masking to prevent text from hitting the edge abruptly */
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .order-1 {
+    order: -1;
+  }
+  .order-2 {
+    order: 1;
+  }
+
+  .service-name {
+    font-size: 3.5rem; /* Larger, as per lateral logic */
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--primary);
+    font-family: var(--font-slabo);
+  }
+
+  .image-wrapper {
+    width: 90%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .large-child {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    padding-bottom: 40vh; /* Massive breathing room at the bottom */
+  }
+
+  .content-block {
+    margin-bottom: 8rem; /* Space out the expertise blocks */
+  }
+
+  .service-sub-title {
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: clamp(1.2rem, 3vw, 25px);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    font-family: var(--font-faustina);
+    font-weight: 400;
+  }
+
+  .content-block p {
+    font-family: var(--font-poppins);
+    font-size: clamp(1rem, 2vw, 25px);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .list li {
+    font-family: var(--font-poppins);
+    font-size: clamp(1rem, 2vw, 25px);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .vertical-section {
+      flex-direction: column;
+      height: auto;
+      overflow: visible;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .lateral-panel {
+      width: 100%;
+      height: auto;
+      padding: 60px var(--container-padding);
+    }
+
+    .service-name {
+      font-size: clamp(2.2rem, 10vw, 3.5rem);
+      text-align: left;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      aspect-ratio: 4/3;
+    }
+
+    .large-child {
+      font-size: 1.1rem;
+      padding-bottom: 0;
+      max-width: 100%;
+    }
+
+    .content-block {
+      margin-bottom: 4rem;
+    }
+
+    .scrolling-panel {
+      padding-top: 0;
+      mask-image: none;
+      background-color: var(--bg);
+    }
+
+    .list li {
+      font-size: 1.4rem;
+      padding: 0.5rem 0;
+    }
+
+    .static-panel {
+      padding-top: 80px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import SplitType from "split-type";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initServices() {
+    // 1. Interactive Intro Animation Logic
+    const textArea = document.querySelector(".split-text-area");
+    if (!textArea) return;
+
+    let split = new SplitType(textArea as HTMLElement, {
+      types: "lines,words,chars",
+    });
+    let animation: gsap.core.Tween | gsap.core.Timeline | null = null;
+
+    const handleResize = () => {
+      split.revert();
+      split = new SplitType(textArea as HTMLElement, {
+        types: "lines,words,chars",
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    const contents = {
+      precision: "Enterprise AI success depends on precision. We reject generic solutions, building high-precision data integrations with 95%+ OCR accuracy, military-grade security protection, and algorithms custom-trained for your unique workflows.",
+      strategy: "Technological excellence must be backed by a strategic vision. We analyze your operational structure, comprehensively map automation potential, and guarantee full data sovereignty aligned with national laws and compliance regulations.",
+      impact: "Technology is only valuable if it delivers real impact. We transform slow systems into autonomous workflows, cut document processing times by up to 70%, and eliminate millions of manual work hours for your business growth."
+    };
+
+    const charBtn = document.querySelector("#anim-chars");
+    const wordBtn = document.querySelector("#anim-words");
+    const lineBtn = document.querySelector("#anim-lines");
+    const buttons = [charBtn, wordBtn, lineBtn];
+
+    const updateActiveButton = (activeBtn: Element | null) => {
+      buttons.forEach(btn => btn?.classList.remove("active"));
+      activeBtn?.classList.add("active");
+    };
+
+    charBtn?.addEventListener("click", () => {
+      updateActiveButton(charBtn);
+      animation?.revert();
+      split.revert();
+      textArea.textContent = contents.precision;
+      split = new SplitType(textArea as HTMLElement, { types: "lines,words,chars" });
+      
+      animation = gsap.from(split.chars, {
+        x: 100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out",
+        stagger: 0.02,
+      });
+    });
+
+    wordBtn?.addEventListener("click", () => {
+      updateActiveButton(wordBtn);
+      animation?.revert();
+      split.revert();
+      textArea.textContent = contents.strategy;
+      split = new SplitType(textArea as HTMLElement, { types: "lines,words,chars" });
+
+      animation = gsap.from(split.words, {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        stagger: 0.03,
+      });
+    });
+
+    lineBtn?.addEventListener("click", () => {
+      updateActiveButton(lineBtn);
+      animation?.revert();
+      split.revert();
+      textArea.textContent = contents.impact;
+      split = new SplitType(textArea as HTMLElement, { types: "lines,words,chars" });
+
+      animation = gsap.from(split.lines, {
+        y: 30,
+        rotationX: -45,
+        transformOrigin: "top center",
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.08,
+      });
+    });
+
+    // 2. Lateral Scroll Logic
+    const sections = gsap.utils.toArray(".vertical-section");
+    const mm = gsap.matchMedia();
+
+    sections.forEach((section: any) => {
+      const large = section.querySelector(".large-child");
+      if (!large) return;
+
+      mm.add("(min-width: 901px)", () => {
+        gsap.to(large, {
+          y: () => window.innerHeight - large.clientHeight - 180,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            pin: true,
+            start: "top top",
+            end: () => "+=1500",
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+    });
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      mm.revert();
+      split.revert();
+    };
+  }
+
+  // Initialize once on load
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    initServices();
+  } else {
+    window.addEventListener("load", () => {
+      initServices();
+    });
+  }
+</script>

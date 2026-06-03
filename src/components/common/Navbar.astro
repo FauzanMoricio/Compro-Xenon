@@ -1,0 +1,265 @@
+---
+import { Menu } from "lucide-astro";
+---
+
+<nav class="navbar">
+  <div class="container nav-container">
+    <a href="/" class="logo">
+      <img src="/images/logo.png" alt="Priventry Logo" class="logo-img" />
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#projects">Work</a></li>
+      <li><a href="/#news">Insights</a></li>
+      <li><a href="/#contact" class="btn-sm">Let's Talk</a></li>
+    </ul>
+
+    <button class="menu-toggle" aria-label="Toggle Menu">
+      <Menu size={24} />
+    </button>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition:
+      backdrop-filter 0.3s,
+      background-color 0.3s;
+  }
+
+  .navbar.scrolled {
+    background-color: rgba(8, 12, 20, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(252, 159, 33, 0.1);
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 var(--container-padding);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text);
+    font-family: var(--font-faustina);
+    position: relative;
+    z-index: 1002;
+    text-decoration: none;
+  }
+
+  .logo img,
+  .logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+  }
+
+  .nav-links a {
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    transition:
+      opacity 0.3s,
+      color 0.3s;
+    position: relative;
+    padding: 0.5rem 0;
+  }
+
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    opacity: 1;
+    color: var(--text);
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a.active::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  /* Exclude button from dot indicator */
+  .nav-links a.btn-sm::after {
+    display: none !important;
+  }
+
+  /* Increased specificity to override .nav-links a padding */
+  .nav-links a.btn-sm {
+    background-color: var(--primary);
+    color: #000 !important; /* Ensure high contrast text */
+    padding: 0.6rem 1.8rem;
+    border-radius: 100px;
+    opacity: 1 !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  }
+
+  .nav-links a.btn-sm:hover {
+    transform: translateY(-3px) scale(1.02);
+    background-color: #ffb14e;
+    box-shadow: 0 10px 25px rgba(252, 159, 33, 0.4);
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    z-index: 1002;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      background-color: rgba(26, 9, 15, 0.98);
+      backdrop-filter: blur(15px);
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1.5rem;
+      z-index: 999; /* Below navbar (1000) so logo & hamburger stay visible */
+      border-bottom: 1px solid rgba(252, 159, 33, 0.2);
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      padding: 130px 2rem 3rem 2rem; /* 130px top to push menu items further down */
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+      /* Gunakan transform untuk menyembunyikan menu ke atas secara sempurna */
+      transform: translateY(-120%);
+      transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+    }
+
+    .nav-links.active {
+      transform: translateY(0);
+    }
+
+    .nav-links a {
+      font-size: clamp(1.2rem, 6vw, 1.8rem); /* Ukuran font lebih kecil */
+      font-family: var(--font-display);
+      letter-spacing: 1px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .nav-links a.btn-sm {
+      font-size: 1rem;
+      padding: 0.8rem 2.5rem;
+      font-family: var(--font-primary);
+      width: auto;
+      margin-top: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // 1. Scroll State for Navbar background
+  const nav = document.querySelector(".navbar");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      nav?.classList.add("scrolled");
+    } else {
+      nav?.classList.remove("scrolled");
+    }
+  });
+
+  // 2. Mobile Menu Toggle
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navLinksList = document.querySelector(".nav-links");
+  const body = document.body;
+
+  menuToggle?.addEventListener("click", () => {
+    navLinksList?.classList.toggle("active");
+    // Lock scroll when menu is open
+    if (navLinksList?.classList.contains("active")) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "";
+    }
+  });
+
+  // Close menu when a link is clicked
+  const navItems = document.querySelectorAll(".nav-links a");
+  navItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      navLinksList?.classList.remove("active");
+      body.style.overflow = "";
+    });
+  });
+
+  // 3. Intersection Observer for Active Menu
+  const sections = document.querySelectorAll("section[id]");
+  // Exclude the CTA button from acting like a regular nav link
+  const navLinks = document.querySelectorAll(".nav-links a:not(.btn-sm)");
+
+  const options = {
+    threshold: 0,
+    rootMargin: "-50% 0px -50% 0px",
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute("id");
+        navLinks.forEach((link) => link.classList.remove("active"));
+        const activeLink = document.querySelector(
+          `.nav-links a[href="#${id}"]:not(.btn-sm)`,
+        );
+        if (activeLink) {
+          activeLink.classList.add("active");
+        }
+      }
+    });
+  }, options);
+
+  sections.forEach((section) => observer.observe(section));
+</script>

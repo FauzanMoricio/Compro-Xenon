@@ -1,0 +1,411 @@
+---
+import { projects } from "../../data/projects";
+---
+
+<section id="projects" class="work-wrapper">
+  <!-- Strategic Teaser -->
+  <section class="section teaser">
+    <div class="teaser-content container">
+      <h3 class="teaser-title reveal-text">
+        Client <span class="green-accent">Impact</span>
+      </h3>
+      <p class="teaser-subtitle reveal-text">
+        Every collaboration is designed to produce real impact and sustainable operational efficiency improvements.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Pinned Section -->
+  <section class="section pin-section">
+    <div class="content">
+      <!-- Left side: Project List -->
+      <div class="left-panel">
+        <div class="fill"></div>
+        <ul class="list">
+          {
+            projects.map((project) => (
+              <li class="project-item">
+                <span class="active-indicator">→</span>
+                {project.title}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="right">
+        {
+          projects.map((project, i) => (
+            <div class="slide center">
+              <div class="project-card-frame gpu-accel">
+                <span class="card-index">0{i + 1}</span>
+                <img
+                  src={project.gallery[0]}
+                  alt={project.title}
+                  loading="lazy"
+                />
+                <div class="card-info">
+                  <span class="card-category">{project.category}</span>
+                  <h4 class="card-title">{project.title}</h4>
+                  <a
+                    href="/projects"
+                    class="read-more"
+                    style="margin-top: 1rem;"
+                  >
+                    View All Work <span style="font-family: monospace;">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .work-wrapper {
+      background-color: var(--bg);
+      color: #fff;
+      padding-top: 0; /* Nol agar 100vh pas dengan layar */
+      padding-bottom: var(--section-spacing);
+    }
+
+    .section {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 var(--container-padding);
+    }
+
+    .teaser {
+      height: 100vh; /* Kembali ke satu layar penuh */
+      display: flex;
+      align-items: center; /* Teks tepat di tengah secara vertikal */
+      justify-content: center;
+      border-top: 1px dashed rgba(255, 255, 255, 0.15); /* Garis pembatas atas */
+    }
+
+    .teaser-content {
+      max-width: 900px;
+      text-align: center;
+    }
+
+    .teaser-title {
+      font-size: clamp(2rem, 5vw, 3.5rem); /* Reduced for minimalism */
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px; /* Increased for elegance */
+      text-transform: uppercase;
+    }
+
+    .teaser-subtitle {
+      font-size: 1.1rem; /* Smaller, more discreet */
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .green-accent {
+      color: #fc9f21;
+    }
+
+    .pin-section {
+      border-top: dashed 1px rgba(255, 255, 255, 0.2);
+      border-bottom: dashed 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      position: relative;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .content .left-panel {
+      width: 40%;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .content ul {
+      font-size: 1.1rem; /* Significantly reduced for minimalist look */
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      flex-grow: 0;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .project-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      transition: all 0.4s ease;
+    }
+
+    .active-indicator {
+      color: #fc9f21;
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .content .fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background-color: #fc9f21; /* Switched to Amber */
+    }
+
+    .content .right {
+      flex-grow: 1;
+      position: relative;
+      height: 400px; /* Fixed height for centered slides */
+    }
+
+    .right .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .project-card-frame {
+      width: 100%;
+      max-width: 450px;
+      background-color: #0d0d0d;
+      border-radius: 30px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(252, 159, 33, 0.2); /* Switched to Amber border */
+      box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(252, 159, 33, 0.05);
+      transition:
+        transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
+        box-shadow 0.6s ease;
+    }
+
+    .project-card-frame:hover {
+      transform: scale(1.02) translateY(-5px);
+      box-shadow: 0 50px 120px rgba(252, 159, 33, 0.1);
+    }
+
+    .card-index {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      font-size: 5rem;
+      font-weight: 800;
+      color: rgba(252, 159, 33, 0.1);
+      line-height: 1;
+      z-index: 1;
+    }
+
+    .project-card-frame img {
+      width: 100%;
+      height: clamp(200px, 30vh, 350px);
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-info {
+      padding: 2rem;
+      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+    }
+
+    .card-category {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #fc9f21;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    @media (max-width: 1023px) {
+      .section {
+        height: auto;
+        padding: 80px 0;
+      }
+      .teaser {
+        height: auto;
+        padding: 100px 0;
+      }
+      .pin-section {
+        border: none;
+      }
+      .content {
+        flex-direction: column;
+        gap: 3rem;
+      }
+      .content .left-panel {
+        display: none; /* Hide side list on mobile for cleaner look */
+      }
+      .content .right {
+        width: 85%;
+        height: auto;
+      }
+      .slide {
+        position: relative;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        margin-bottom: 4rem !important;
+      }
+      .project-card-frame {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: auto;
+      }
+      .card-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+      }
+    }
+  </style>
+
+  <script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import SplitType from "split-type";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initWork() {
+      // 1. Teaser Animation
+      const revealTexts = document.querySelectorAll(".reveal-text");
+      revealTexts.forEach((text) => {
+        const split = new SplitType(text as HTMLElement, {
+          types: "lines,words",
+        });
+
+        gsap.from(split.lines, {
+          scrollTrigger: {
+            trigger: text,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+            onEnter: () => ScrollTrigger.refresh(), // Ensure total height is correct
+          },
+          y: 100,
+          opacity: 0,
+          duration: 1,
+          ease: "power4.out",
+          stagger: 0.1,
+        });
+      });
+
+      // 2. Pinning Animation
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        const list = document.querySelector(".list");
+        const fill = document.querySelector(".fill");
+        if (!list || !fill) return;
+
+        const items = gsap.utils.toArray(".project-item");
+        const slides = gsap.utils.toArray(".slide");
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".pin-section",
+            start: "top top",
+            end: () => "+=" + items.length * 100 + "%",
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Progress line scale
+        gsap.set(fill, {
+          scaleY: 1 / items.length,
+          transformOrigin: "top left",
+        });
+
+        items.forEach((item: any, i: number) => {
+          const indicator = item.querySelector(".active-indicator");
+
+          if (i > 0) {
+            const prevItem = items[i - 1] as HTMLElement;
+            const prevIndicator = prevItem.querySelector(".active-indicator");
+            const prevSlide = slides[i - 1];
+
+            tl.to(item, { color: "#FC9F21", x: 20, duration: 0.3 }, 0.5 * i)
+              .to(indicator, { autoAlpha: 1, x: 0, duration: 0.3 }, "<")
+              .to(slides[i], { autoAlpha: 1, duration: 0.2 }, "<")
+              .to(
+                prevItem,
+                { color: "rgba(255,255,255,0.1)", x: 0, duration: 0.3 },
+                "<",
+              )
+              .to(prevIndicator, { autoAlpha: 0, x: -20, duration: 0.3 }, "<")
+              .to(prevSlide, { autoAlpha: 0, duration: 0.2 }, "<");
+          } else {
+            gsap.set(item, { color: "#FC9F21", x: 20 });
+            gsap.set(indicator, { autoAlpha: 1, x: 0 });
+            gsap.set(slides[i], { autoAlpha: 1 });
+          }
+        });
+
+        tl.to(
+          fill,
+          {
+            scaleY: 1,
+            ease: "none",
+            duration: tl.duration(),
+          },
+          0,
+        );
+      });
+
+      // Mobile specific: make sure slides are visible
+      mm.add("(max-width: 1023px)", () => {
+        gsap.set(".slide", {
+          autoAlpha: 1,
+          position: "relative",
+          top: "auto",
+          transform: "none",
+          margin: "2rem 0",
+        });
+        gsap.set(".project-item", { color: "#fff", opacity: 1 });
+      });
+
+      return () => mm.revert();
+    }
+
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      initWork();
+    } else {
+      window.addEventListener("load", initWork);
+    }
+  </script>
+</section>

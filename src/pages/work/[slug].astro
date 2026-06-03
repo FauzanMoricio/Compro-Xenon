@@ -1,0 +1,395 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SubNavbar from '../../components/common/SubNavbar.astro';
+
+import { projects } from '../../data/projects';
+import { ArrowRight, CheckCircle2, Globe, Cpu, BarChart3 } from 'lucide-astro';
+
+export async function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`${project.title} | Priventry`} description={project.shortDesc}>
+	<SubNavbar backUrl="/projects" backText="Back to Portfolio" />
+	
+	<div id="smooth-wrapper">
+		<div id="smooth-content">
+			<main class="project-detail">
+				<!-- Cinematic Hero -->
+				<section class="project-hero">
+					<div class="container wider-container">
+						<div class="hero-header reveal-in">
+							<span class="category-tag">{project.category} — {project.year}</span>
+							<h1 class="project-title">{project.title}</h1>
+							<p class="project-lead">{project.shortDesc}</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- The Narrative (Deep Dive) -->
+				<section class="project-narrative section">
+					<div class="container narrow-container reveal-in">
+						<h2 class="accent-title">Strategic Review</h2>
+						<div class="narrative-text">
+							<p>{project.longDesc}</p>
+							<p class="strategy-callout"><strong>Strategy:</strong> {project.strategy}</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Horizontal Gallery Section -->
+				<section id="portfolio" class="horizontal-gallery-section">
+					<div class="gallery-container">
+						<div class="horiz-gallery-wrapper">
+							<div class="horiz-gallery-strip" id="gallery-strip">
+								{project.gallery?.map((imgUrl, i) => (
+									<div class="project-wrap">
+										<div class="image-inner">
+											<img src={imgUrl} alt={`${project.title} Showcase ${i + 1}`} loading="lazy" />
+											<span class="image-num">0{i + 1}</span>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Technical Architecture & Results -->
+				<section class="project-details section">
+					<div class="container wider-container">
+						<div class="details-grid">
+							<!-- Engineering Section -->
+							<div class="details-block reveal-in">
+								<div class="block-icon"><Cpu size={32} /></div>
+								<h2 class="accent-title">Technologies Used</h2>
+								<div class="tech-grid">
+									{project.techStack?.map((tech) => (
+										<div class="tech-item">
+											<CheckCircle2 size={18} />
+											<span>{tech}</span>
+										</div>
+									))}
+								</div>
+							</div>
+
+							<!-- Business Outcomes -->
+							<div class="details-block reveal-in">
+								<div class="block-icon"><BarChart3 size={32} /></div>
+								<h2 class="accent-title">Business Impact</h2>
+								<div class="outcomes-list">
+									{project.results?.map((result) => (
+										<div class="outcome-card">
+											<p>{result}</p>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Bottom CTA -->
+				<section class="project-footer section">
+					<div class="container text-center reveal-in">
+						<h2 class="cta-title">Want to see more impact?</h2>
+						<a href="/projects" class="btn-primary">See All Client Impact <ArrowRight size={20} /></a>
+					</div>
+				</section>
+			</main>
+
+
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.project-detail {
+		background: var(--bg);
+		padding-top: var(--nav-height);
+	}
+
+	.container {
+		width: 90%;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.wider-container { max-width: 1600px; }
+	.narrow-container { max-width: 900px; }
+
+	/* Hero */
+	.project-hero {
+		padding: 220px 0 80px;
+		background: linear-gradient(to bottom, #11080b 0%, var(--bg) 100%);
+	}
+
+	.category-tag {
+		display: block;
+		text-transform: uppercase;
+		letter-spacing: 4px;
+		color: var(--primary);
+		font-weight: 700;
+		font-size: 0.9rem;
+		margin-bottom: 2rem;
+	}
+
+	.project-title {
+		font-size: clamp(4rem, 10vw, 8rem);
+		line-height: 1;
+		font-weight: 900;
+		margin-bottom: 3rem;
+		letter-spacing: -2px;
+	}
+
+	.project-lead {
+		font-size: clamp(1.4rem, 3vw, 1.8rem);
+		color: var(--text-muted);
+		max-width: 900px;
+		line-height: 1.5;
+	}
+
+	/* Narrative */
+	.project-narrative {
+		padding: 100px 0;
+	}
+
+	.accent-title {
+		font-size: clamp(2rem, 5vw, 3rem);
+		margin-bottom: 3rem;
+		color: var(--primary);
+		font-weight: 800;
+	}
+
+	.narrative-text p {
+		font-size: clamp(1.15rem, 2vw, 1.4rem);
+		line-height: 1.8;
+		color: var(--text);
+		margin-bottom: 2rem;
+		opacity: 0.9;
+	}
+
+	.strategy-callout {
+		border-left: 4px solid var(--primary);
+		padding-left: 2rem;
+		font-style: italic;
+		background: rgba(252, 159, 33, 0.03);
+		padding: 2rem;
+		border-radius: 0 16px 16px 0;
+	}
+
+	/* Horizontal Gallery */
+	.horizontal-gallery-section {
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+		padding: 100px 0;
+	}
+
+	.horiz-gallery-wrapper {
+		display: flex;
+		flex-wrap: nowrap;
+		will-change: transform;
+	}
+
+	.horiz-gallery-strip {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: 4rem;
+		padding: 0 5vw;
+	}
+
+	.project-wrap {
+		flex: 0 0 clamp(400px, 40vw, 800px);
+		position: relative;
+	}
+
+	.image-inner {
+		position: relative;
+		border-radius: 24px;
+		overflow: hidden;
+		aspect-ratio: 4/5;
+		box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+		border: 1px solid rgba(255,255,255,0.05);
+	}
+
+	.image-inner img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 1s ease;
+	}
+
+	.image-num {
+		position: absolute;
+		bottom: 2rem;
+		left: 2rem;
+		font-size: 4rem;
+		font-weight: 900;
+		color: rgba(255,255,255,0.2);
+		line-height: 1;
+	}
+
+	/* Details Grid */
+	.project-details {
+		padding: 120px 0;
+		background: rgba(255,255,255,0.01);
+	}
+
+	.details-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 8rem;
+	}
+
+	.block-icon {
+		color: var(--primary);
+		margin-bottom: 2rem;
+	}
+
+	.tech-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+	}
+
+	.tech-item {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		font-size: 1.1rem;
+		color: var(--text-muted);
+	}
+
+	.tech-item svg { color: var(--primary); }
+
+	.outcomes-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.outcome-card {
+		background: rgba(255,255,255,0.02);
+		padding: 2.5rem;
+		border-radius: 20px;
+		border: 1px solid rgba(252, 159, 33, 0.05);
+		transition: all 0.3s ease;
+	}
+
+	.outcome-card:hover {
+		border-color: var(--primary);
+		background: rgba(252, 159, 33, 0.03);
+	}
+
+	.outcome-card p {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	/* Footer CTA */
+	.project-footer {
+		padding: 150px 0;
+		border-top: 1px solid rgba(255,255,255,0.05);
+	}
+
+	.cta-title {
+		font-size: clamp(3rem, 6vw, 5rem);
+		margin-bottom: 3rem;
+		font-weight: 800;
+	}
+
+	.btn-primary {
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		background: var(--primary);
+		color: var(--bg);
+		padding: 1.2rem 3rem;
+		border-radius: 100px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		text-decoration: none;
+		transition: all 0.3s ease;
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-5px) scale(1.05);
+		box-shadow: 0 20px 40px rgba(252, 159, 33, 0.2);
+	}
+
+	@media (max-width: 992px) {
+		.details-grid { grid-template-columns: 1fr; gap: 4rem; }
+		.horiz-gallery-strip { gap: 2rem; }
+		.project-wrap { flex: 0 0 80vw; }
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function initProjectDetail() {
+		// 1. Entrance Reveals
+		gsap.from('.reveal-in', {
+			y: 50,
+			opacity: 0,
+			duration: 1.2,
+			stagger: 0.2,
+			ease: 'power3.out'
+		});
+
+		// 2. Horizontal Gallery Pinning
+		const portfolio = document.querySelector("#portfolio");
+		const galleryStrip = document.querySelector("#gallery-strip");
+		
+		if (portfolio && galleryStrip) {
+			const scrollWidth = galleryStrip.scrollWidth;
+			const windowWidth = window.innerWidth;
+			const horizontalScrollLength = scrollWidth - windowWidth + (windowWidth * 0.1);
+
+			gsap.to(galleryStrip, {
+				scrollTrigger: {
+					trigger: portfolio,
+					start: "center center",
+					end: () => `+=${scrollWidth}`,
+					scrub: 1,
+					pin: true,
+					anticipatePin: 1,
+					invalidateOnRefresh: true
+				},
+				x: () => -horizontalScrollLength,
+				ease: "none"
+			});
+		}
+
+		// 3. Image Parallax within Strip
+		const images = gsap.utils.toArray(".image-inner img");
+		images.forEach(img => {
+			gsap.to(img, {
+				scrollTrigger: {
+					trigger: img,
+					containerAnimation: null, // If we had a master timeline
+					scrub: true
+				},
+				scale: 1.1,
+				ease: "none"
+			});
+		});
+	}
+
+	window.addEventListener('load', () => {
+		setTimeout(initProjectDetail, 300);
+	});
+</script>
+

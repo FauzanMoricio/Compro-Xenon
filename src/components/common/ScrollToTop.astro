@@ -1,0 +1,125 @@
+---
+import { ArrowUp } from 'lucide-astro';
+---
+
+<button id="scroll-to-top" class="scroll-top-btn" aria-label="Scroll to top">
+  <div class="btn-inner">
+    <ArrowUp size={24} stroke-width={2.5} />
+  </div>
+  <svg class="progress-ring" width="50" height="50">
+    <circle class="progress-ring__circle" stroke="var(--primary)" stroke-width="2" fill="transparent" r="22" cx="25" cy="25"/>
+  </svg>
+</button>
+
+<style>
+  .scroll-top-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .scroll-top-btn.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .btn-inner {
+    width: 44px;
+    height: 44px;
+    background: rgba(8, 12, 20, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+
+  .scroll-top-btn:hover .btn-inner {
+    background: var(--primary);
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(252, 159, 33, 0.3);
+  }
+
+  /* Progress Ring */
+  .progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+    pointer-events: none;
+  }
+
+  .progress-ring__circle {
+    transition: stroke-dashoffset 0.1s;
+    transform-origin: 50% 50%;
+    stroke-dasharray: 138.23; /* 2 * PI * r (r=22) */
+    stroke-dashoffset: 138.23;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-top-btn {
+      bottom: 25px;
+      right: 25px;
+    }
+  }
+</style>
+
+<script>
+  function initScrollTop() {
+    const btn = document.getElementById('scroll-to-top');
+    const circle = document.querySelector('.progress-ring__circle') as SVGCircleElement;
+    if (!btn || !circle) return;
+
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+
+    // Show/Hide button and update progress ring
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollY / docHeight;
+      const offset = circumference - (progress * circumference);
+
+      circle.style.strokeDashoffset = offset.toString();
+
+      if (scrollY > 400) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
+    });
+
+    // Smooth scroll to top using Lenis (integrated globally)
+    btn.addEventListener('click', () => {
+      // @ts-ignore - lenis is global
+      if (window.lenis) {
+        // @ts-ignore
+        window.lenis.scrollTo(0, { duration: 2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initScrollTop);
+  document.addEventListener('astro:page-load', initScrollTop);
+</script>

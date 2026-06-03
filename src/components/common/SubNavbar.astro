@@ -1,0 +1,132 @@
+---
+import { X } from 'lucide-astro';
+
+export interface Props {
+  backUrl?: string;
+  backText?: string;
+}
+
+const { backUrl = "/", backText = "Close" } = Astro.props;
+---
+
+<nav class="sub-navbar">
+  <div class="container nav-container">
+    <a href="/" class="logo">
+      <img src="/images/logo.png" alt="Priventry Logo" class="logo-img" />
+    </a>
+    
+    <a href={backUrl} class="btn-close">
+      <span class="close-text">{backText}</span>
+      <div class="icon-circle">
+        <X size={18} strokeWidth={2.5} />
+      </div>
+    </a>
+  </div>
+</nav>
+
+<style>
+  .sub-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: backdrop-filter 0.3s, background-color 0.3s, border-bottom 0.3s;
+    border-bottom: 1px solid transparent; /* default invisible border to animate */
+  }
+
+  .sub-navbar.scrolled {
+    background-color: rgba(8, 12, 20, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(252, 159, 33, 0.1);
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Logo inherited styles for consistency */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text);
+    font-family: var(--font-faustina);
+    text-decoration: none;
+  }
+
+  .logo img,
+  .logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Premium Close Button */
+  .btn-close {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    group: hover;
+  }
+
+  .close-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .btn-close:hover .close-text {
+    color: var(--text);
+  }
+
+  .btn-close:hover .icon-circle {
+    background: var(--primary);
+    color: #000;
+    transform: rotate(90deg) scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    .close-text {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const subNav = document.querySelector('.sub-navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      subNav?.classList.add('scrolled');
+    } else {
+      subNav?.classList.remove('scrolled');
+    }
+  }, { passive: true });
+</script>

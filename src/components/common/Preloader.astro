@@ -1,0 +1,145 @@
+---
+
+---
+
+<div id="global-preloader" class="preloader">
+  <div class="preloader-content">
+    <div class="preloader-logo">
+      <img src="/images/logo.png" alt="Priventry Logo" class="preloader-logo-img" />
+    </div>
+    <div class="preloader-line">
+      <div class="line-fill"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #050505; /* Pitch black for dramatic effect */
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .preloader-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 3rem;
+    font-weight: 800;
+    font-family: var(--font-faustina);
+    color: var(--text);
+    letter-spacing: -1px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .preloader-logo-img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .preloader-line {
+    width: 120px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .line-fill {
+    width: 0%;
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 2px;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const initPreloader = () => {
+    const preloader = document.getElementById("global-preloader");
+    if (!preloader) return;
+
+    // Check if user has already seen the preloader in this session
+    const hasVisited = sessionStorage.getItem("compro_visited");
+
+    if (hasVisited) {
+      // Instantly remove preloader on subsequent page loads
+      preloader.style.display = "none";
+      document.body.classList.remove("loading-lock");
+
+      // Dispatch event to tell Hero to play its entrance right away
+      window.dispatchEvent(new Event("preloaderComplete"));
+      return;
+    }
+
+    // Lock scrolling on body while preloader runs
+    document.body.style.overflow = "hidden";
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        sessionStorage.setItem("compro_visited", "true");
+        document.body.style.overflow = "auto";
+        preloader.style.display = "none";
+
+        // Let the rest of the application know the intro is done
+        window.dispatchEvent(new Event("preloaderComplete"));
+      },
+    });
+
+    // 1. Fill the loading bar
+    tl.to(".line-fill", {
+      width: "100%",
+      duration: 1.5,
+      ease: "power3.inOut",
+    })
+      // 2. Hide the line
+      .to(
+        ".preloader-line",
+        {
+          opacity: 0,
+          duration: 0.3,
+        },
+        "-=0.2",
+      )
+      // 3. Subtle scale up on the logo
+      .fromTo(
+        ".preloader-logo",
+        { scale: 0.9, opacity: 0, y: 20 },
+        { scale: 1, opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+        0,
+      )
+      // 4. Slide the whole preloader UP like a curtain
+      .to(
+        preloader,
+        {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "power4.inOut",
+        },
+        "+=0.3",
+      );
+  };
+
+  // Run on load
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    initPreloader();
+  } else {
+    window.addEventListener("load", initPreloader);
+  }
+</script>

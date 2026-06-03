@@ -1,0 +1,637 @@
+---
+import { newsArticles } from "../../data/news";
+---
+
+<section id="news" class="news-section section">
+  <!-- Motion Path SVG Background -->
+  <div class="svg-container">
+    <svg
+      id="bee-scroll"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 1588.4 2762.3"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <clipPath id="clip-path">
+          <rect
+            id="Rectangle_2885"
+            data-name="Rectangle 2885"
+            width="89.252"
+            height="72.066"
+            fill="none"></rect>
+        </clipPath>
+      </defs>
+      <path
+        id="motionPath"
+        fill="none"
+        d="M37.5,31C32.5,41.2,52.3,122.6,358,237.2c222.1,69.8,610.9-11.5,861.3,82.5
+                                           c236.4,88.8,340.3,257.8,323.7,416.2c-19.9,209.7-162.4,595.6-340.4,613.1c-106.6-36.6-174.3,34.9-127.1,196.4
+                                           c-24.6,284.5-286.8,140-346.4,140c-182.9-15.9-269.3,213.5-155.7,344.2c118,135.7,31.2,223.3,392,144.9
+                                           c158.4-34.4,182.2,81,177.4,136.5c-26.9,51.3-27.4,334.3-150.7,382.5c-112.9,44.1-263.8-30.3-397.7-64.7
+                                           c-141.7-36.4-257.9,86.3-257.9,86.3"
+        stroke="rgba(252, 159, 33, 0.2)"
+        stroke-miterlimit="10"
+        stroke-width="6"
+        stroke-dasharray="10 15"></path>
+      <g id="motionSVG" data-name="Group 1117">
+        <g id="bee">
+          <!-- Paper Plane -->
+          <g transform="scale(3.5) translate(-12, -12)">
+            <!-- Upper Wing -->
+            <path fill="var(--primary)" opacity="0.7" d="M 23 12 L 2 3 L 2 10 L 17 12 Z" />
+            <!-- Lower Wing -->
+            <path fill="var(--primary)" opacity="1.0" d="M 23 12 L 17 12 L 2 14 L 2 21 Z" />
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="content-layer">
+    <!-- Sticky Header -->
+    <div class="header-sticky">
+      <div class="badge">Perspectives & Thoughts</div>
+      <h2 class="section-title">
+        Technology <span class="accent">Perspectives</span>
+      </h2>
+      <p class="section-intro">
+        In-depth analysis of AI implementation, enterprise data security, and the direction of technology transformation.
+      </p>
+    </div>
+
+    <!-- Timeline Container -->
+    <div class="timeline-container container">
+      {
+        newsArticles.map((article, index) => (
+          <div class="news-card-wrapper" data-news-index={index}>
+            <div class="news-card">
+              <div class="card-image-box">
+                <img
+                  src={article.coverImage}
+                  alt={article.title}
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="card-info">
+                <div class="module-number">NEWS {index < 9 ? "0" : ""}{index + 1}</div>
+                <h3 class="news-title">{article.title}</h3>
+                <p class="news-desc">{article.shortDesc}</p>
+                <div class="card-actions">
+                  <a href={`/news/${article.slug}`} class="btn-details">
+                    Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Simplified Pagination -->
+    <div class="news-pagination container" id="news-pagination">
+      <button class="page-btn" id="news-prev" aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+
+      <div class="page-info" id="news-page-info">1/3</div>
+
+      <button class="page-btn" id="news-next" aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .news-section {
+    /* Adjusted to natural height rather than 500vh to avoid extreme scrolling */
+    background-color: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--section-spacing);
+    padding-bottom: var(--section-spacing);
+  }
+
+  .svg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Stretches the SVG exactly to the section height */
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+  }
+
+  #bee-scroll {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+  }
+
+  .content-layer {
+    position: relative;
+    z-index: 1;
+    pointer-events: none; /* Let clicks pass through empty space */
+  }
+
+  /* Sticky Header */
+  .header-sticky {
+    position: sticky;
+    top: 15vh;
+    text-align: center;
+    z-index: 2;
+    pointer-events: auto;
+    padding: 0 20px;
+    margin-bottom: 20vh; /* Pushes the first card down */
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid rgba(252, 159, 33, 0.2);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(252, 159, 33, 0.6);
+    margin-bottom: 1.6rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    font-family: var(--font-primary);
+  }
+
+  .section-title .accent {
+    color: var(--primary);
+  }
+
+  .section-intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* Timeline Container */
+  .timeline-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15vh; /* Gap between cards to allow the animation to travel */
+    padding-top: 10vh;
+  }
+
+  .news-card-wrapper {
+    display: flex;
+    width: 100%;
+    pointer-events: auto;
+  }
+
+  /* Alternating Layout */
+  .news-card-wrapper:nth-child(even) {
+    justify-content: flex-start;
+    padding-right: 5%;
+  }
+  .news-card-wrapper:nth-child(odd) {
+    justify-content: flex-end;
+    padding-left: 5%;
+  }
+
+  .news-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2.5rem;
+    padding: 2.5rem;
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    max-width: 800px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .news-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .card-image-box {
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    background: var(--primary);
+    border-radius: 2rem;
+    overflow: hidden;
+    padding: 4px;
+    border: 2px solid rgba(8, 12, 20, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    transition: transform 0.6s ease;
+  }
+
+  .news-card:hover .card-image-box {
+    transform: rotate(5deg) scale(1.05);
+  }
+
+  .card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.6rem;
+  }
+
+  .card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .module-number {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+  }
+
+  .news-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    font-family: var(--font-primary);
+  }
+
+  .news-desc {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    font-size: 1.05rem;
+  }
+
+  .card-actions {
+    margin-top: 1rem;
+  }
+
+  .btn-details {
+    display: inline-block;
+    padding: 8px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-details:hover {
+    color: #fff;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 1024px) {
+    .header-sticky {
+      position: relative;
+      top: 0;
+      margin-bottom: 8vh;
+      padding-top: 100px;
+    }
+    .timeline-container {
+      gap: 5rem;
+      padding-top: 0;
+    }
+    .news-card-wrapper:nth-child(even),
+    .news-card-wrapper:nth-child(odd) {
+      justify-content: center;
+      padding: 0;
+    }
+    .news-card {
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+      gap: 1.5rem;
+      max-width: 90%;
+    }
+    .card-image-box {
+      width: 100%;
+      height: 200px;
+      border-radius: 1.5rem;
+    }
+    .card-image-box img {
+      border-radius: 1.2rem;
+    }
+    .news-card:hover .card-image-box {
+      transform: none; /* Disable rotation on mobile */
+    }
+
+  @media (max-width: 768px) {
+    .news-pagination {
+      margin-top: 40px !important;
+      gap: 15px !important;
+    }
+    .page-info {
+      font-size: 1.2rem !important;
+    }
+    .page-btn {
+      width: 44px !important;
+      height: 44px !important;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Forced Global Pagination Styles */
+  .news-pagination {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 30px !important;
+    margin: 80px auto !important;
+    width: 100% !important;
+    max-width: 500px !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 99 !important;
+  }
+
+  .page-btn {
+    appearance: none !important;
+    background: transparent !important;
+    border: 2px solid var(--primary) !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 12px !important;
+    color: var(--primary) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    padding: 0 !important;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background: var(--primary) !important;
+    color: var(--bg) !important;
+  }
+
+  .page-btn:disabled {
+    opacity: 0.2 !important;
+    cursor: not-allowed !important;
+  }
+
+  .page-info {
+    font-family: var(--font-stack) !important;
+    font-size: 1.2rem !important;
+    color: var(--primary) !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    min-width: 100px !important;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+
+  function initNewsAnimation() {
+    gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+    // Cleanup existing triggers for this component to prevent duplicates on navigation
+    ScrollTrigger.getAll().forEach((st) => {
+      if (
+        st.vars.trigger === ".news-section" ||
+        st.vars.trigger === ".news-card"
+      ) {
+        st.kill();
+      }
+    });
+
+    const isMobile = window.innerWidth <= 768;
+    gsap.set("#motionSVG", { scale: isMobile ? 0.7 : 1.2, autoAlpha: 1 });
+    gsap.set("#bee", { transformOrigin: "50% 50%", scaleX: 1 });
+
+    const motionSvg = document.querySelector("#motionSVG");
+    const motionPath = document.querySelector("#motionPath");
+
+    if (!motionSvg || !motionPath) return;
+
+    let getProp = gsap.getProperty("#motionSVG"),
+      flippedX = false,
+      flippedY = false;
+
+    // Helper function
+    function pathEase(path, config: any = {}) {
+      let axis = config.axis || "y",
+        precision = config.precision || 1,
+        rawPath = MotionPathPlugin.cacheRawPathMeasurements(
+          MotionPathPlugin.getRawPath(gsap.utils.toArray(path)[0]),
+          Math.round(precision * 12),
+        ),
+        useX = axis === "x",
+        start = rawPath[0][useX ? 0 : 1],
+        end =
+          rawPath[rawPath.length - 1][
+            rawPath[rawPath.length - 1].length - (useX ? 2 : 1)
+          ],
+        range = end - start,
+        l = Math.round(precision * 200),
+        inc = 1 / l,
+        positions = [0],
+        a = [0] as number[],
+        minIndex = 0,
+        smooth = [0],
+        minChange = (1 / l) * 0.6,
+        smoothRange =
+          config.smooth === true ? 7 : Math.round(config.smooth) || 0,
+        fullSmoothRange = smoothRange * 2,
+        getClosest = (p: number) => {
+          while (positions[minIndex] <= p && minIndex++ < l) {}
+          a.push(
+            a.length &&
+              ((p - positions[minIndex - 1]) /
+                (positions[minIndex] - positions[minIndex - 1])) *
+                inc +
+                minIndex * inc,
+          );
+          smoothRange &&
+            a.length > smoothRange &&
+            a[a.length - 1] - a[a.length - 2] < minChange &&
+            smooth.push(a.length - smoothRange);
+        },
+        i = 1;
+      for (; i < l; i++) {
+        positions[i] =
+          (MotionPathPlugin.getPositionOnPath(rawPath, i / l)[axis] - start) /
+          range;
+      }
+      positions[l] = 1;
+      for (i = 0; i < l; i++) {
+        getClosest(i / l);
+      }
+      a.push(1);
+      if (smoothRange) {
+        smooth.push(l - fullSmoothRange + 1);
+        smooth.forEach((i) => {
+          let start = a[i],
+            j = Math.min(i + fullSmoothRange, l),
+            inc = (a[j] - start) / (j - i),
+            c = 1;
+          i++;
+          for (; i < j; i++) {
+            a[i] = start + inc * c++;
+          }
+        });
+      }
+      l = a.length - 1;
+      return (p: number) => {
+        let i = p * l,
+          s = a[i | 0];
+        return i ? s + (a[Math.ceil(i)] - s) * (i % 1) : 0;
+      };
+    }
+
+    // Animation attached to the section
+    gsap.to("#motionSVG", {
+      scrollTrigger: {
+        trigger: ".news-section",
+        start: "top top", // Start animation when the top of the section hits top of viewport
+        end: "bottom bottom", // End when the bottom hits the bottom
+        scrub: 1,
+        onUpdate: (self) => {
+          let rotation = getProp("rotation") as number,
+            flipY = Math.abs(rotation) > 90,
+            flipX = self.direction === 1;
+          if (flipY !== flippedY || flipX !== flippedX) {
+            gsap.to("#bee", {
+              scaleY: flipY ? -1 : 1,
+              scaleX: flipX ? 1 : -1,
+              duration: 0.25,
+            });
+            flippedY = flipY;
+            flippedX = flipX;
+          }
+        },
+      },
+      duration: 10,
+      ease: pathEase("#motionPath", { smooth: true }),
+      immediateRender: true,
+      motionPath: {
+        path: "#motionPath",
+        align: "#motionPath",
+        alignOrigin: [0.5, 0.5],
+        autoRotate: 0,
+      },
+    });
+
+    // Optional: Fade in cards as they scroll into view
+    gsap.utils.toArray(".news-card").forEach((card: any) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+    });
+
+    // Ensure all ScrollTrigger calculations are recalculated after new triggers are added
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener("DOMContentLoaded", initNewsAnimation);
+  document.addEventListener("astro:page-load", initNewsAnimation);
+
+  // === Pagination Logic ===
+  function initNewsPagination() {
+    const ITEMS_PER_PAGE = 5;
+    const allCards = document.querySelectorAll<HTMLElement>('.news-card-wrapper[data-news-index]');
+    const pageInfo = document.getElementById('news-page-info');
+    const prevBtn = document.getElementById('news-prev') as HTMLButtonElement;
+    const nextBtn = document.getElementById('news-next') as HTMLButtonElement;
+
+    if (!allCards.length || !pageInfo || !prevBtn || !nextBtn) return;
+
+    const totalPages = Math.max(1, Math.ceil(allCards.length / ITEMS_PER_PAGE));
+    let currentPage = 1;
+
+    function showPage(page: number) {
+      const start = (page - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+
+      allCards.forEach((card, index) => {
+        if (index >= start && index < end) {
+          card.style.display = '';
+          // Re-trigger fade-in animation
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(40px)';
+          requestAnimationFrame(() => {
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update counter text
+      pageInfo!.textContent = `${page}/${totalPages}`;
+
+      // Update prev/next states
+      prevBtn.disabled = page === 1;
+      nextBtn.disabled = page === totalPages;
+
+      currentPage = page;
+    }
+
+    function goToPage(page: number) {
+      if (page < 1 || page > totalPages) return;
+      showPage(page);
+
+      // Scroll to the news section top
+      const newsSection = document.getElementById('news');
+      if (newsSection) {
+        newsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+    nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+    // Initialize first page
+    showPage(1);
+  }
+
+  document.addEventListener("DOMContentLoaded", initNewsPagination);
+  document.addEventListener("astro:page-load", initNewsPagination);
+</script>

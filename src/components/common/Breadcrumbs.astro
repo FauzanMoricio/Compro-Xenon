@@ -1,0 +1,119 @@
+---
+const { pathname } = Astro.url;
+const segments = pathname.split("/").filter(Boolean);
+
+// Map segments to homepage anchors if they don't have separate pages
+const anchorMapping: Record<string, string> = {
+  news: "/#news",
+  insights: "/#news", // Fallback if insights is used
+  work: "/#work",
+  portfolio: "/#work",
+  services: "/#services",
+  about: "/#about",
+};
+
+const breadcrumbItems = segments.map((segment, index) => {
+  const isLast = index === segments.length - 1;
+  const label = segment.replace(/-/g, " ").toUpperCase();
+
+  // Use anchor mapping if it exists and it's NOT the last segment
+  let url = "/" + segments.slice(0, index + 1).join("/");
+  if (!isLast && anchorMapping[segment.toLowerCase()]) {
+    url = anchorMapping[segment.toLowerCase()];
+  }
+
+  return { label, url, isLast };
+});
+---
+
+<nav class="breadcrumbs" id="breadcrumbs-nav">
+  <div class="breadcrumbs-container">
+    <a href="/" class="breadcrumb-link">HOME</a>
+
+    {
+      breadcrumbItems.map((item) => (
+        <>
+          <span class="separator">/</span>
+          {item.isLast ? (
+            <span class="breadcrumb-current">{item.label}</span>
+          ) : (
+            <a href={item.url} class="breadcrumb-link">
+              {item.label}
+            </a>
+          )}
+        </>
+      ))
+    }
+  </div>
+</nav>
+
+<style>
+  .breadcrumbs {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 140px; /* Di bawah SubNavbar */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999 !important; /* Sangat tinggi agar tidak tertutup panel */
+    pointer-events: none;
+  }
+
+  .breadcrumbs-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    padding: 10px 24px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    pointer-events: auto;
+  }
+
+  .breadcrumb-link {
+    font-family: var(--font-stack);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+  }
+
+  .separator {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.15);
+    font-weight: 300;
+    margin: 0 2px;
+  }
+
+  .breadcrumb-current {
+    font-family: var(--font-stack);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--primary);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumbs {
+      padding-top: 100px;
+    }
+    .breadcrumb-link,
+    .breadcrumb-current {
+      font-size: 0.6rem;
+    }
+    .breadcrumbs-container {
+      padding: 8px 18px;
+    }
+  }
+</style>

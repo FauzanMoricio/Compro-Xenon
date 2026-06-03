@@ -1,0 +1,374 @@
+---
+import {
+  Instagram,
+  Linkedin,
+  MoveUpRight,
+} from "lucide-astro";
+---
+
+<footer class="footer-container">
+  <!-- The Bouncy Bubble Background -->
+  <div class="footer-bouncy-bg">
+    <svg
+      preserveAspectRatio="none"
+      id="footer-img"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1200 200"
+    >
+      <path
+        id="bouncy-path"
+        fill="black"
+        stroke="rgba(255, 255, 255, 0.5)"
+        stroke-width="1"
+        vector-effect="non-scaling-stroke"
+        d="M-20,100 C300,100 900,100 1220,100 L1220,200 L-20,200 Z"></path>
+    </svg>
+  </div>
+
+  <!-- Footer actual background (solid, sits below the SVG wave) -->
+  <div class="footer-solid-bg"></div>
+
+  <div class="container footer-content">
+    <!-- Links & Socials Grid -->
+    <div class="footer-main-grid">
+      <div class="footer-brand reveal-footer">
+        <a href="/" class="logo">
+          <img src="/images/logo.png" alt="Priventry Logo" class="logo-img" />
+        </a>
+        <p>
+          Leading AI Software Factory & Digital Transformation Consultant for corporations, state-owned enterprises, and governments.
+        </p>
+      </div>
+
+      <div class="footer-nav-links reveal-footer">
+        <div class="nav-col">
+          <h4>Navigation</h4>
+          <a href="/#about">About</a>
+          <a href="/#services">Services</a>
+          <a href="/#projects">Work</a>
+          <a href="/#contact">Contact</a>
+        </div>
+        <div class="nav-col">
+          <h4>Social</h4>
+          <a href="https://www.instagram.com/priventry.ai" target="_blank" rel="noopener noreferrer"><Instagram size={18} /> Instagram</a>
+          <a href="https://www.linkedin.com/company/priventry" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /> LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar reveal-footer">
+      <p>&copy; 2026 Priventry.ai. All rights reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* ─── LAYOUT ─────────────────────────────────────────────── */
+  .footer-container {
+    position: relative;
+    padding: 0 0 30px;
+    background-color: transparent;
+    overflow: visible; /* let the wave peek above */
+    margin-top: 0;
+  }
+
+  /* ─── BOUNCY SVG WAVE ────────────────────────────────────── */
+
+  .footer-bouncy-bg {
+    position: absolute;
+    top: -120px; /* reach up so the wave overhangs the section above */
+    left: 0;
+    width: 100%;
+    height: 120px; /* matches the overhang */
+    z-index: 2;
+    pointer-events: none;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  #footer-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* overflow visible so the path can draw outside SVG bounds during bounce */
+    overflow: visible;
+  }
+
+  /* Solid color fill for the rest of the footer below the wave */
+  .footer-solid-bg {
+    position: absolute;
+    top: -2px; /* Pull it slightly up to hide the bottom horizontal stroke from the SVG */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index: 3;
+  }
+
+  /* ─── CONTENT ────────────────────────────────────────────── */
+  .footer-content {
+    position: relative;
+    z-index: 10;
+    padding-top: 60px;
+  }
+
+
+
+  .footer-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text, #fff);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+  }
+
+  .footer-cta:hover {
+    opacity: 0.7;
+  }
+
+  .footer-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--text, #fff);
+    letter-spacing: -0.5px;
+  }
+
+  .logo img,
+  .logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .accent {
+    color: var(--primary, #6c63ff);
+  }
+
+  .footer-brand p {
+    max-width: 400px;
+    font-size: 0.95rem;
+    color: var(--text-muted, rgba(255, 255, 255, 0.5));
+    margin-top: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .footer-nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .nav-col h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary, #6c63ff);
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-col a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted, rgba(255, 255, 255, 0.5));
+    font-size: 1rem;
+    text-decoration: none;
+    margin-bottom: 0.75rem;
+    transition: color 0.2s;
+  }
+
+  .nav-col a:hover {
+    color: var(--text, #fff);
+  }
+
+  .footer-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 2rem;
+    color: var(--text-muted, rgba(255, 255, 255, 0.4));
+    font-size: 0.85rem;
+  }
+
+  .legal-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .legal-links a {
+    color: var(--text-muted, rgba(255, 255, 255, 0.4));
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .legal-links a:hover {
+    color: var(--text, #fff);
+  }
+
+  /* ─── REVEAL ANIMATION ─── */
+  .reveal-footer {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  .reveal-footer.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 992px) {
+    .footer-main-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-nav-links {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .footer-brand p {
+      max-width: 100%;
+    }
+    .footer-bottom-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .legal-links {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initFooterExperience = () => {
+    const path = document.getElementById("bouncy-path");
+    if (!path) return;
+
+    const FLAT = "M-20,100 C300,100 900,100 1220,100 L1220,200 L-20,200 Z";
+    const DOWN = "M-20,100 C300,170 900,170 1220,100 L1220,200 L-20,200 Z";
+    const UP = "M-20,100 C300,30  900,30  1220,100 L1220,200 L-20,200 Z";
+    const SOFT_DOWN = "M-20,100 C300,130 900,130 1220,100 L1220,200 L-20,200 Z";
+    const SOFT_UP = "M-20,100 C300,70  900,70  1220,100 L1220,200 L-20,200 Z";
+
+    /* Set initial state */
+    gsap.set(path, { attr: { d: FLAT } });
+
+    /* ── ENTER: user scrolls footer into view ── */
+    ScrollTrigger.create({
+      trigger: ".footer-container",
+      start: "top bottom",
+
+      onEnter: (self) => {
+        const vel = Math.abs(self.getVelocity());
+        const str = gsap.utils.clamp(0, 1, vel / 2000);
+
+        gsap.killTweensOf(path);
+
+        gsap
+          .timeline()
+          .to(path, { duration: 0.3, attr: { d: DOWN }, ease: "power3.out" })
+          .to(path, { duration: 0.28, attr: { d: UP }, ease: "power2.inOut" })
+          .to(path, {
+            duration: 0.22,
+            attr: { d: SOFT_DOWN },
+            ease: "power1.inOut",
+          })
+          .to(path, {
+            duration: 0.2,
+            attr: { d: SOFT_UP },
+            ease: "power1.inOut",
+          })
+          .to(path, {
+            duration: 1.6,
+            attr: { d: FLAT },
+            ease: `elastic.out(${1 + str * 0.8}, 0.28)`,
+          });
+      },
+
+      onLeaveBack: (self) => {
+        const vel = Math.abs(self.getVelocity());
+        const str = gsap.utils.clamp(0, 1, vel / 2000);
+
+        gsap.killTweensOf(path);
+
+        gsap
+          .timeline()
+          .to(path, { duration: 0.3, attr: { d: UP }, ease: "power3.out" })
+          .to(path, { duration: 0.28, attr: { d: DOWN }, ease: "power2.inOut" })
+          .to(path, {
+            duration: 0.22,
+            attr: { d: SOFT_UP },
+            ease: "power1.inOut",
+          })
+          .to(path, {
+            duration: 0.2,
+            attr: { d: SOFT_DOWN },
+            ease: "power1.inOut",
+          })
+          .to(path, {
+            duration: 1.6,
+            attr: { d: FLAT },
+            ease: `elastic.out(${1 + str * 0.8}, 0.28)`,
+          });
+      },
+    });
+
+    /* ── REVEAL: stagger footer content in ── */
+    ScrollTrigger.create({
+      trigger: ".footer-container",
+      start: "top 85%",
+      onEnter: () => {
+        document.querySelectorAll(".reveal-footer").forEach((el, i) => {
+          setTimeout(() => el.classList.add("visible"), i * 120);
+        });
+      },
+    });
+  };
+
+  /* Wait for full page load so ScrollTrigger can measure correctly */
+  if (document.readyState === "complete") {
+    initFooterExperience();
+    ScrollTrigger.refresh();
+  } else {
+    window.addEventListener("load", () => {
+      initFooterExperience();
+      setTimeout(() => ScrollTrigger.refresh(), 500);
+    });
+  }
+</script>

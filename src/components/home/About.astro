@@ -1,0 +1,255 @@
+---
+
+---
+
+<section id="about" class="about">
+  <div class="panel-header">Our <span class="accent">Approach</span></div>
+
+  <div class="row-wrap">
+    <!-- Row 1 -->
+    <div class="row">
+      <div class="left">
+        <h1 class="stack-title">Our <span class="accent">Vision</span></h1>
+      </div>
+      <div class="right">
+        <div class="text-content">
+          <p>
+            Building intelligent infrastructure that unlocks human potential. We believe that technology and AI should function to enhance operational capabilities and simplify teamwork, not complicate it.
+          </p>
+          <a href="/about" class="read-more"
+            >Learn More <i class="icon-arrow"></i></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="left">
+        <h1 class="stack-title">Our <span class="accent">Strategy</span></h1>
+      </div>
+      <div class="right">
+        <div class="text-content">
+          <p>
+            Intelligent automation, high security assurance, and full data ownership. We do not design halfway solutions; we build systems deeply integrated with your business operations and scalable as your company grows.
+          </p>
+          <a href="/about" class="read-more"
+            >Learn More <i class="icon-arrow"></i></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+      <div class="left">
+        <h1 class="stack-title">Real <span class="accent">Results</span></h1>
+      </div>
+      <div class="right">
+        <div class="text-content">
+          <p>
+            Real operational metrics that show immediate impact. We measure project success by the efficiency created, reduction in administrative costs, and increased data processing speed within your organization.
+          </p>
+          <a href="/about" class="read-more"
+            >Learn More <i class="icon-arrow"></i></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .about {
+    background-color: var(--bg); /* Deep Midnight Navy */
+    padding: var(--section-spacing) 0;
+    color: #fff;
+  }
+
+  .panel-header {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 60px;
+    padding: 0 5vw;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .accent {
+    color: var(--primary);
+  }
+
+  .row-wrap {
+    border-bottom: 1px dashed rgba(252, 159, 33, 0.1);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping for side-by-side layout */
+    padding: 100px 5vw;
+    border-top: 1px dashed rgba(252, 159, 33, 0.15);
+    min-height: 50vh;
+    align-items: flex-start; /* Aligns text with top of title */
+  }
+
+  .row .left {
+    width: 45%; /* Slightly wider for the stacking titles */
+    flex-shrink: 0;
+  }
+
+  .row .right {
+    width: 55%;
+    padding-left: 5vw; /* Breathing room */
+    margin-left: auto; /* Mencegah konten melompat ke kiri saat .left di-pin oleh GSAP */
+  }
+
+  .stack-title {
+    font-size: clamp(3rem, 8vw, 80px); /* Responsive cinematic scale */
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  .text-content p {
+    font-size: clamp(1.1rem, 2vw, 25px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+    max-width: 800px;
+  }
+
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: gap 0.3s ease;
+  }
+
+  .read-more:hover {
+    gap: 15px;
+  }
+
+  .pin-spacer {
+    width: 40% !important;
+  }
+
+
+
+  @media (max-width: 900px) {
+    .row {
+      flex-direction: column;
+      padding: 60px var(--container-padding);
+      margin-bottom: 0;
+      min-height: auto;
+    }
+    .row .left,
+    .row .right {
+      width: 100%;
+    }
+    .row .right {
+      padding-left: 0;
+      margin-top: 20px;
+    }
+    .row .left {
+      margin-bottom: 20px;
+    }
+    .stack-title {
+      font-size: clamp(3rem, 15vw, 4.5rem);
+      line-height: 1;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    .row-wrap {
+      padding-top: 30px;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initAboutStack = () => {
+    const rows = gsap.utils.toArray(".row");
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 901px)", () => {
+      let offsets: number[] = [];
+      let totalOffset = 0;
+
+      function calculate() {
+        totalOffset = 120; // Start offset to clear navbar
+        offsets = rows.map((row: any) => {
+          let prev = totalOffset;
+          const heading = row.querySelector("h1");
+          if (heading) {
+            totalOffset += heading.offsetHeight;
+          }
+          return prev;
+        });
+      }
+
+      // Initialize only when sektion is approached
+      ScrollTrigger.create({
+        trigger: "#about",
+        start: "top 120%", // Early start for smooth calc
+        once: true,
+        onEnter: () => {
+          // Double check fonts and layout settlement
+          Promise.all([document.fonts.ready]).then(() => {
+            setTimeout(() => {
+              calculate();
+
+              rows.forEach((row: any, i) => {
+                const heading = row.querySelector(".left");
+                const title = row.querySelector(".stack-title");
+
+                // Show them now that we are ready
+                gsap.set(title, { autoAlpha: 1 });
+
+                ScrollTrigger.create({
+                  trigger: heading,
+                  endTrigger: ".row-wrap",
+                  start: () => `top ${offsets[i]}`,
+                  end: () => `bottom ${totalOffset}`,
+                  pin: heading,
+                  pinSpacing: false,
+                  invalidateOnRefresh: true,
+                  refreshPriority: 5,
+                });
+              });
+
+              // Final refresh to lock in positions
+              ScrollTrigger.refresh();
+            }, 100);
+          });
+        },
+      });
+    });
+
+    return () => mm.revert();
+  };
+
+  // Run as soon as possible but with lazy trigger
+  initAboutStack();
+
+  // Ensure refresh on complete page load
+  window.addEventListener("load", () => {
+    setTimeout(() => ScrollTrigger.refresh(), 500);
+  });
+</script>

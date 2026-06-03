@@ -1,0 +1,354 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import SubNavbar from "../../components/common/SubNavbar.astro";
+
+import { newsArticles } from "../../data/news";
+
+export async function getStaticPaths() {
+  return newsArticles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+
+// SEO Schema.org
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": article.title,
+  "image": [article.coverImage],
+  "datePublished": new Date(article.date).toISOString(),
+  "author": [{
+    "@type": "Organization",
+    "name": "Priventry",
+    "url": Astro.url.origin
+  }]
+};
+---
+
+<Layout
+  title={`${article.title} | Priventry`}
+  description={article.shortDesc}
+>
+  <SubNavbar backUrl="/#news" backText="Back" />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+
+  <main class="news-detail">
+    <article>
+      <header class="article-header">
+        <div class="container narrow-container">
+          <div class="meta">
+            <span class="category">{article.category}</span>
+            <span class="dot">•</span>
+            <span class="date">{article.date}</span>
+          </div>
+          <h1>{article.title}</h1>
+          <p class="lead">{article.shortDesc}</p>
+        </div>
+      </header>
+
+      <div class="hero-image">
+        <img src={article.coverImage} alt={article.title} />
+      </div>
+
+      <div class="article-body">
+        <div class="container very-narrow-container">
+          <div class="content-formatted">
+            {
+              article.content
+                .split("\n\n")
+                .map((paragraph) => <p set:html={paragraph}></p>)
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Section -->
+      <section class="recommended-section">
+        <div class="container">
+          <div class="recommended-header">
+            <span class="sub-label">Read Other Articles</span>
+            <h2>Other Perspectives</h2>
+          </div>
+          
+          <div class="recommended-grid">
+            {
+              newsArticles
+                .filter(a => a.slug !== article.slug)
+                .slice(0, 2)
+                .map((rec) => (
+                  <a href={`/news/${rec.slug}`} class="rec-card">
+                    <div class="rec-img">
+                      <img src={rec.coverImage} alt={rec.title} />
+                      <div class="rec-overlay"></div>
+                    </div>
+                    <div class="rec-content">
+                      <span class="rec-cat">{rec.category}</span>
+                      <h3>{rec.title}</h3>
+                      <div class="rec-footer">
+                        <span>Read More</span>
+                        <span class="arrow">→</span>
+                      </div>
+                    </div>
+                  </a>
+                ))
+            }
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+
+</Layout>
+
+<style>
+  .news-detail {
+    padding-top: var(--nav-height);
+    background: var(--bg);
+    min-height: 100vh;
+  }
+
+  .article-header {
+    padding: 200px 0 60px;
+    text-align: center;
+  }
+
+  .narrow-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .very-narrow-container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .category {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .dot {
+    color: var(--text-muted);
+  }
+
+  .date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin-bottom: 2rem;
+    font-family: var(--font-accent);
+    line-height: 1.1;
+  }
+
+  .lead {
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: clamp(300px, 50vh, 600px);
+    object-fit: cover;
+    border-radius: 24px;
+  }
+
+  .article-body {
+    padding: 80px 0 150px;
+  }
+
+  .content-formatted p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 2rem;
+  }
+
+  .content-formatted a {
+    color: var(--primary);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .content-formatted a:hover {
+    color: var(--text);
+  }
+
+  .content-formatted strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .content-formatted ul, .content-formatted ol {
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .content-formatted li {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Recommended Section */
+  .recommended-section {
+    padding: 100px 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .recommended-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .sub-label {
+    display: block;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .recommended-header h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-family: var(--font-accent);
+  }
+
+  .recommended-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .rec-card {
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec-img {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .rec-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .rec-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+  }
+
+  .rec-content {
+    padding: 30px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rec-cat {
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .rec-content h3 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+  }
+
+  .rec-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .rec-footer .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  /* Hover Effects */
+  .rec-card:hover {
+    border-color: rgba(252, 159, 33, 0.3);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .rec-card:hover .rec-img img {
+    transform: scale(1.1);
+  }
+
+  .rec-card:hover .rec-footer {
+    color: var(--primary);
+  }
+
+  .rec-card:hover .rec-footer .arrow {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 768px) {
+    .recommended-grid {
+      grid-template-columns: 1fr;
+    }
+    .recommended-section {
+      padding: 60px 0;
+    }
+    .rec-img {
+      height: 200px;
+    }
+  }
+</style>

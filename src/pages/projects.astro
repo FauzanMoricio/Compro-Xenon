@@ -1,0 +1,482 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SubNavbar from '../components/common/SubNavbar.astro';
+
+import { projects } from '../data/projects';
+import { ArrowRight, CheckCircle2, Cpu, BarChart3 } from 'lucide-astro';
+---
+
+<Layout title="Client Impact | Priventry" description="Portfolio of case studies on artificial intelligence systems, online examination platforms, and blockchain tracking for our clients.">
+	<SubNavbar backUrl="/" backText="Back to Home" />
+
+	<main class="projects-page">
+		<section class="projects-hero" id="projects-hero">
+			<div class="container hero-container hero-content">
+				<span class="sub-heading intro-reveal">Featured Portfolio</span>
+				<h1 class="page-title intro-title">Real <span class="accent">Impact.</span></h1>
+				<p class="page-desc intro-reveal">
+					In-depth exploration of enterprise-scale digital transformation projects.
+				</p>
+				
+				<!-- Transition Element -->
+				<div class="heritage-line-wrap">
+					<div class="heritage-line"></div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Projects Loop -->
+		{projects.map((project, idx) => (
+			<div class="project-chapter">
+				<!-- Project Header -->
+				<section class="project-header reveal-in">
+					<div class="container text-center">
+						<span class="p-index">Project 0{idx + 1}</span>
+						<h2 class="p-title">{project.title}</h2>
+						<p class="p-short">{project.shortDesc}</p>
+					</div>
+				</section>
+
+				<!-- Horizontal Gallery (Target for GSAP) -->
+				<section class="horiz-portfolio-section">
+					<div class="container-fluid">
+						<div class="horiz-gallery-wrapper">
+							<div class="horiz-gallery-strip">
+								{project.gallery.map((imgUrl) => (
+									<div class="project-wrap">
+										<img src={imgUrl} alt={`${project.title} Showcase`} />
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- Project Deep Dive -->
+				<section class="project-deep-dive section reveal-in">
+					<div class="container wider-container">
+						<div class="dive-grid">
+							<!-- Content Column -->
+							<div class="dive-content">
+								<div class="dive-block">
+									<h3 class="dive-label">Strategic Narrative</h3>
+									<p>{project.longDesc}</p>
+								</div>
+								<div class="dive-block">
+									<h3 class="dive-label">Our Strategy</h3>
+									<p class="strategy-txt">{project.strategy}</p>
+								</div>
+							</div>
+
+							<!-- Specs Column -->
+							<div class="dive-specs">
+								<div class="spec-card">
+									<div class="spec-icon"><BarChart3 size={24} /></div>
+									<h4 class="spec-label">Business Impact</h4>
+									<ul>
+										{project.results.map((result) => (
+											<li><CheckCircle2 size={16} /> {result}</li>
+										))}
+									</ul>
+								</div>
+								<div class="spec-card">
+									<div class="spec-icon"><Cpu size={24} /></div>
+									<h4 class="spec-label">Technologies Used</h4>
+									<div class="tag-cloud">
+										{project.techStack.map((tech) => (
+											<span class="tag">{tech}</span>
+										))}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		))}
+
+		<!-- Outro Panel -->
+		<section class="panel plain outro-panel">
+			<div class="container text-center">
+				<h2 class="outro-title">Ready to start your digital transformation?</h2>
+				<a href="/#contact" class="btn-primary">Schedule a Consultation</a>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.projects-page {
+		background-color: var(--bg);
+		color: var(--text);
+	}
+
+	body { overflow-x: hidden; margin: 0; }
+	
+	.container { width: 90%; max-width: 1200px; margin: 0 auto; }
+	.wider-container { max-width: 1400px; }
+
+	/* Hero */
+	.projects-hero {
+		padding: 280px 0 120px;
+		text-align: center;
+		background: linear-gradient(to bottom, #04060a 0%, var(--bg) 100%);
+		min-height: 90vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.hero-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.sub-heading {
+		display: block;
+		text-transform: uppercase;
+		letter-spacing: 5px;
+		font-size: 0.85rem;
+		color: var(--primary);
+		margin-bottom: 2rem;
+		font-weight: 500;
+		font-family: var(--font-accent);
+	}
+
+	.page-title {
+		font-size: clamp(3.5rem, 8vw, 7rem);
+		color: var(--text);
+		margin-bottom: 2rem;
+		font-weight: 800;
+		line-height: 1.1;
+		text-align: center;
+	}
+
+	.page-title .accent {
+		color: var(--primary);
+	}
+
+	.page-desc {
+		font-size: clamp(1rem, 2vw, 1.25rem);
+		color: var(--text-muted);
+		max-width: 800px;
+		line-height: 1.7;
+		padding: 0 var(--container-padding);
+	}
+
+	/* Heritage Line Transition */
+	.heritage-line-wrap {
+		position: absolute;
+		bottom: -100px;
+		left: 50%;
+		transform: translateX(-50%);
+		height: 200px;
+		width: 1px;
+		overflow: hidden;
+		z-index: 5;
+	}
+
+	.heritage-line {
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom, var(--primary), transparent);
+		transform: translateY(-100%);
+	}
+
+	/* Project Chapter */
+	.project-chapter {
+		padding: 180px 0;
+		border-bottom: 1px solid rgba(255,255,255,0.05);
+	}
+
+	.project-header {
+		padding-bottom: 120px;
+	}
+
+	.p-index {
+		color: var(--primary);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+		font-size: 0.9rem;
+		margin-bottom: 1.5rem;
+		display: block;
+		font-family: var(--font-accent);
+	}
+
+	.p-title {
+		font-size: clamp(3rem, 6vw, 4.5rem);
+		font-weight: 800;
+		margin-bottom: 1.5rem;
+	}
+
+	.p-short {
+		font-size: 1.25rem;
+		color: var(--text-muted);
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+	/* Horizontal Gallery */
+	.horiz-portfolio-section {
+		position: relative;
+		overflow: hidden;
+		padding: 60px 0;
+	}
+
+	.container-fluid { width: 100%; padding: 0; }
+
+	.horiz-gallery-strip,
+	.horiz-gallery-wrapper {
+		display: flex;
+		flex-wrap: nowrap;
+		will-change: transform;
+		position: relative;
+	}
+
+	.project-wrap {
+		width: 28vw;
+		padding: 0 1.2rem;
+		box-sizing: border-box;
+		flex: 0 0 auto;
+	}
+
+	.project-wrap img {
+		width: 100%;
+		aspect-ratio: 1/1;
+		object-fit: cover;
+		border-radius: 24px;
+		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+	}
+
+	/* Deep Dive */
+	.project-deep-dive {
+		padding: 120px 0;
+	}
+
+	.dive-grid {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr;
+		gap: clamp(2rem, 6vw, 8rem);
+		margin-bottom: 60px;
+	}
+
+	.dive-label {
+		color: var(--primary);
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		margin-bottom: 2rem;
+		font-family: var(--font-accent);
+	}
+
+	.dive-block { margin-bottom: 4rem; }
+
+	.dive-block p {
+		font-size: 1.2rem;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.strategy-txt {
+		font-style: italic;
+		border-left: 3px solid var(--primary);
+		padding-left: 2rem;
+		background: rgba(255,255,255,0.02);
+		padding: 2rem;
+		border-radius: 0 16px 16px 0;
+	}
+
+	.spec-card {
+		background: rgba(255,255,255,0.02);
+		border: 1px solid rgba(255,255,255,0.05);
+		padding: 3rem;
+		border-radius: 24px;
+		margin-bottom: 2rem;
+	}
+
+	.spec-icon { color: var(--primary); margin-bottom: 1.5rem; }
+
+	.spec-label {
+		font-size: 1.2rem;
+		font-weight: 700;
+		margin-bottom: 1.5rem;
+	}
+
+	.spec-card ul { list-style: none; padding: 0; }
+
+	.spec-card ul li {
+		display: flex;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-bottom: 1.2rem;
+		color: var(--text-muted);
+		font-size: 1.05rem;
+	}
+
+	.spec-card ul li svg { color: var(--primary); margin-top: 4px; }
+
+	.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+
+	.tag {
+		background: rgba(255,255,255,0.05);
+		border: 1px solid rgba(255,255,255,0.1);
+		padding: 6px 14px;
+		border-radius: 100px;
+		font-size: 0.85rem;
+		color: var(--primary);
+	}
+
+	.outro-title {
+		font-size: clamp(3rem, 6vw, 4.5rem);
+		font-weight: 900;
+		margin-bottom: 3rem;
+	}
+
+	.outro-panel {
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 250px;
+		position: relative;
+	}
+
+	.btn-primary {
+		display: inline-flex;
+		align-items: center;
+		background: var(--primary);
+		color: var(--bg);
+		padding: 1.3rem 3.5rem;
+		border-radius: 100px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		text-decoration: none;
+		transition: all 0.3s ease;
+		font-size: 1rem;
+	}
+
+	@media (max-width: 1024px) {
+		.dive-grid { grid-template-columns: 1fr; gap: 4rem; }
+		.project-wrap { width: 60vw; }
+		.project-chapter { padding: 120px 0; }
+		.project-header { padding-bottom: 60px; }
+	}
+
+	@media (max-width: 768px) {
+		.project-wrap { width: 85vw; }
+		.spec-card { padding: 2rem; }
+		.projects-hero { padding: 120px 0 80px; }
+		.outro-title { font-size: clamp(2rem, 8vw, 3.5rem); }
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function initPortfolio() {
+		// 1. Entrance Reveals
+		gsap.from('.intro-reveal, .intro-title', {
+			y: 30,
+			opacity: 0,
+			duration: 1,
+			stagger: 0.2,
+			ease: 'power3.out'
+		});
+
+		// 2. Multi-section Horizontal Logic
+		const horizontalSections = gsap.utils.toArray(".horiz-gallery-wrapper");
+
+		horizontalSections.forEach(function (sec : any) {
+			const pinWrap = sec.querySelector(".horiz-gallery-strip");
+
+			let pinWrapWidth : number;
+			let horizontalScrollLength : number;
+
+			function refresh() {
+				pinWrapWidth = pinWrap.scrollWidth;
+				horizontalScrollLength = pinWrapWidth - window.innerWidth;
+			}
+
+			refresh();
+
+			gsap.to(pinWrap, {
+				scrollTrigger: {
+					scrub: true,
+					trigger: sec,
+					pin: sec,
+					start: "center center",
+					end: () => `+=${pinWrapWidth + 800}`,
+					invalidateOnRefresh: true,
+					anticipatePin: 1
+				},
+				x: () => -horizontalScrollLength,
+				ease: "none"
+			});
+
+			ScrollTrigger.addEventListener("refreshInit", refresh);
+		});
+
+		// 3. Hero to Project Transition
+		const hero = document.querySelector("#projects-hero");
+		const heroContent = document.querySelector(".hero-content");
+		const heritageLine = document.querySelector(".heritage-line");
+
+		if (hero && heroContent) {
+			gsap.to(heroContent, {
+				scrollTrigger: {
+					trigger: hero,
+					start: "top top",
+					end: "bottom top",
+					scrub: true
+				},
+				scale: 0.8,
+				opacity: 0,
+				y: -50,
+				ease: "none"
+			});
+
+			gsap.to(heritageLine, {
+				scrollTrigger: {
+					trigger: hero,
+					start: "top top",
+					end: "bottom top",
+					scrub: true
+				},
+				y: "0%",
+				ease: "none"
+			});
+		}
+
+		// 4. Simple reveals
+		gsap.from('.reveal-in', {
+			scrollTrigger: {
+				trigger: '.reveal-in',
+				start: "top 85%"
+			},
+			y: 50,
+			opacity: 0,
+			duration: 1.2,
+			stagger: 0.2,
+			ease: 'power3.out'
+		});
+
+		// 5. Final Refresh for Global Footer
+		ScrollTrigger.refresh();
+	}
+
+	window.addEventListener('load', () => {
+		setTimeout(initPortfolio, 300);
+	});
+</script>
+
+
+
+
