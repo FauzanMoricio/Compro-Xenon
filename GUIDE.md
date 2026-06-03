@@ -1,6 +1,6 @@
 # Priventry.ai - Quick Developer Guide
 
-Panduan singkat dan langsung pada intinya agar developer baru bisa memahami dan menjalankan proyek ini dalam waktu kurang dari 5 menit.
+Panduan singkat dan langsung pada intinya.
 
 ---
 
