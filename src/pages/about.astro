@@ -441,6 +441,31 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 					);
 				}
 			});
+
+			// 6. Seamless Infinite Wrap Logic (Tuned for Global Footer)
+			let isWrapping = false;
+			const handleScrollWrap = () => {
+				if (isWrapping) return;
+				const scroll = window.scrollY;
+				const maxScroll = ScrollTrigger.maxScroll(window);
+
+				// Detect when user hits the very bottom of the global footer
+				if (scroll > maxScroll - 15) {
+					isWrapping = true;
+					window.scrollTo({ top: 15 });
+					setTimeout(() => (isWrapping = false), 200);
+				} else if (scroll < 10) {
+					isWrapping = true;
+					window.scrollTo({ top: maxScroll - 20 });
+					setTimeout(() => (isWrapping = false), 200);
+				}
+			};
+
+			window.addEventListener("scroll", handleScrollWrap, { passive: true });
+
+			return () => {
+				window.removeEventListener("scroll", handleScrollWrap);
+			};
 		});
 
 		// --- MOBILE/TABLET ANIMATIONS (NATURAL SCROLL) ---
@@ -623,31 +648,7 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 			window.scrollTo({ top: 0, behavior: "smooth" });
 		});
 
-		// 6. Seamless Infinite Wrap Logic (Tuned for Global Footer)
-		let isWrapping = false;
-		window.addEventListener(
-			"scroll",
-			() => {
-				// Only run infinite scroll wrap on desktop screens (min-width: 1024px)
-				if (window.innerWidth < 1024) return;
-
-				if (isWrapping) return;
-				const scroll = window.scrollY;
-				const maxScroll = ScrollTrigger.maxScroll(window);
-
-				// Detect when user hits the very bottom of the global footer
-				if (scroll > maxScroll - 15) {
-					isWrapping = true;
-					window.scrollTo({ top: 15 });
-					setTimeout(() => (isWrapping = false), 200);
-				} else if (scroll < 10) {
-					isWrapping = true;
-					window.scrollTo({ top: maxScroll - 20 });
-					setTimeout(() => (isWrapping = false), 200);
-				}
-			},
-			{ passive: true },
-		);
+		// Scroll wrap logic moved inside desktop media query
 
 		// Refresh ScrollTrigger after intro animation & layout settling
 		setTimeout(() => {
