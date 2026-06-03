@@ -628,6 +628,9 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 		window.addEventListener(
 			"scroll",
 			() => {
+				// Only run infinite scroll wrap on desktop screens (min-width: 1024px)
+				if (window.innerWidth < 1024) return;
+
 				if (isWrapping) return;
 				const scroll = window.scrollY;
 				const maxScroll = ScrollTrigger.maxScroll(window);
