@@ -1,6 +1,6 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import SubNavbar from "../components/common/SubNavbar.astro";
+import Layout from "@layouts/Layout.astro";
+import SubNavbar from "@components/common/SubNavbar.astro";
 ---
 
 <Layout
@@ -298,10 +298,7 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 
 	gsap.registerPlugin(ScrollTrigger, Draggable, TextPlugin);
 
-	// Normalize scroll to eliminate browser-native jitter ("grejet-grejet")
-	if (window.innerWidth >= 1024) {
-		ScrollTrigger.normalizeScroll(true);
-	}
+	// Config ScrollTrigger
 	ScrollTrigger.config({ ignoreMobileResize: true });
 
 	function initAnimation() {
@@ -1059,6 +1056,7 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 		.panels-container {
 			min-height: auto;
 			height: auto;
+			overflow-x: hidden !important;
 		}
 		.panel {
 			position: relative !important;
@@ -1066,7 +1064,7 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 			min-height: 100vh;
 			opacity: 1 !important;
 			visibility: visible !important;
-			overflow: visible !important;
+			overflow-x: hidden !important;
 			padding: clamp(6rem, 12vh, 8rem) 5vw 4rem 5vw !important;
 			display: flex;
 			align-items: center;
@@ -1182,10 +1180,12 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 			height: 80vh !important;
 			min-height: 550px !important;
 			position: relative !important;
+			overflow: hidden !important;
 		}
 		.gallery {
 			height: 100% !important;
 			position: relative !important;
+			overflow: hidden !important;
 		}
 		.cards {
 			width: clamp(15rem, 55vw, 20rem) !important;

@@ -33,6 +33,11 @@ Panduan singkat dan langsung pada intinya.
    ```bash
    npm run preview
    ```
+5. **TypeScript Type Checker**:
+   ```bash
+   npm run check
+   ```
+   *Memvalidasi seluruh kode TypeScript & template Astro*
 
 ---
 
@@ -43,8 +48,8 @@ Panduan singkat dan langsung pada intinya.
   * `images/logo2.png`: Logo persegi ikon "P" (Favicon browser)
 * **/src/**: Kode sumber utama
   * **components/**: Komponen modular (.astro)
-    * `common/`: Komponen global (Navbar, Footer, Preloader, Breadcrumbs)
-    * `home/`: Bagian/section Landing Page utama (Hero, About, Services, Work, Contact)
+    * `common/`: Komponen global (Navbar, Footer, Preloader, Breadcrumbs, SubNavbar, ScrollToTop)
+    * `home/`: Bagian/section Landing Page utama (Hero, About, Services, Work, News, Contact)
   * **layouts/**: Template induk halaman
     * `Layout.astro`: Template HTML utama (Inisialisasi Lenis & Google Fonts)
   * **pages/**: Routing berbasis file (Setiap file `.astro` di sini otomatis jadi halaman URL)
@@ -57,6 +62,30 @@ Panduan singkat dan langsung pada intinya.
     * `news.ts`: Daftar artikel & wawasan
     * `projects.ts`: Portfolio/studi kasus proyek
     * `services.ts`: Detail daftar layanan
+
+---
+
+## 🔗 Path Aliases (Import Standar)
+
+Proyek ini menggunakan alias agar import lebih bersih dan tidak perlu menulis path relatif panjang:
+
+| Alias | Mengarah ke |
+|---|---|
+| `@components/*` | `src/components/*` |
+| `@layouts/*` | `src/layouts/*` |
+| `@styles/*` | `src/styles/*` |
+| `@data/*` | `src/data/*` |
+
+**Contoh penggunaan:**
+```typescript
+// ✅ Standar profesional (gunakan ini)
+import Layout from '@layouts/Layout.astro';
+import SubNavbar from '@components/common/SubNavbar.astro';
+import { projects } from '@data/projects';
+
+// ❌ Jangan pakai path relatif panjang
+import Layout from '../../layouts/Layout.astro';
+```
 
 ---
 

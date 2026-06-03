@@ -1,7 +1,8 @@
 {
-  "name": "compro",
+  "name": "priventry-compro",
+  "description": "Priventry.ai — AI Software Factory & Digital Transformation Consultant company profile website.",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "node": ">=18.17.1"
   },
@@ -9,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
     "astro": "astro"
   },
   "dependencies": {

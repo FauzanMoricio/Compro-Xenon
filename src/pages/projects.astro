@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SubNavbar from '../components/common/SubNavbar.astro';
+import Layout from '@layouts/Layout.astro';
+import SubNavbar from '@components/common/SubNavbar.astro';
 
-import { projects } from '../data/projects';
+import { projects } from '@data/projects';
 import { ArrowRight, CheckCircle2, Cpu, BarChart3 } from 'lucide-astro';
 ---
 
@@ -111,8 +111,6 @@ import { ArrowRight, CheckCircle2, Cpu, BarChart3 } from 'lucide-astro';
 		color: var(--text);
 	}
 
-	body { overflow-x: hidden; margin: 0; }
-	
 	.container { width: 90%; max-width: 1200px; margin: 0 auto; }
 	.wider-container { max-width: 1400px; }
 
@@ -492,7 +490,3 @@ import { ArrowRight, CheckCircle2, Cpu, BarChart3 } from 'lucide-astro';
 
 	runAfterPreloader(initPortfolio);
 </script>
-
-
-
-

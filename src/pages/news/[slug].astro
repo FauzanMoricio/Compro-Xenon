@@ -1,8 +1,8 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import SubNavbar from "../../components/common/SubNavbar.astro";
+import Layout from "@layouts/Layout.astro";
+import SubNavbar from "@components/common/SubNavbar.astro";
 
-import { newsArticles } from "../../data/news";
+import { newsArticles } from "@data/news";
 
 export async function getStaticPaths() {
   return newsArticles.map((article) => ({
