@@ -717,6 +717,12 @@ const { service } = Astro.props;
   }
 
   function runAfterPreloader(initFunc: () => void) {
+    const preloader = document.getElementById("global-preloader");
+    if (!preloader || preloader.style.display === "none") {
+      setTimeout(initFunc, 300);
+      return;
+    }
+
     let initialized = false;
     const triggerInit = () => {
       if (initialized) return;
@@ -724,19 +730,8 @@ const { service } = Astro.props;
       setTimeout(initFunc, 300);
     };
 
-    if (sessionStorage.getItem("compro_visited") === "true") {
-      if (
-        document.readyState === "complete" ||
-        document.readyState === "interactive"
-      ) {
-        setTimeout(triggerInit, 100);
-      } else {
-        window.addEventListener("load", triggerInit);
-      }
-    } else {
-      window.addEventListener("preloaderComplete", triggerInit);
-      setTimeout(triggerInit, 4000);
-    }
+    window.addEventListener("preloaderComplete", triggerInit);
+    setTimeout(triggerInit, 4000);
   }
 
   runAfterPreloader(initAnimations);

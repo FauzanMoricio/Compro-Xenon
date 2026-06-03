@@ -690,6 +690,12 @@ const bentoImages = [
 	}
 
 	function runAfterPreloader(initFunc: () => void) {
+		const preloader = document.getElementById("global-preloader");
+		if (!preloader || preloader.style.display === "none") {
+			initFunc();
+			return;
+		}
+
 		let initialized = false;
 		const triggerInit = () => {
 			if (initialized) return;
@@ -697,19 +703,8 @@ const bentoImages = [
 			initFunc();
 		};
 
-		if (sessionStorage.getItem("compro_visited") === "true") {
-			if (
-				document.readyState === "complete" ||
-				document.readyState === "interactive"
-			) {
-				setTimeout(triggerInit, 100);
-			} else {
-				window.addEventListener("load", triggerInit);
-			}
-		} else {
-			window.addEventListener("preloaderComplete", triggerInit);
-			setTimeout(triggerInit, 4000);
-		}
+		window.addEventListener("preloaderComplete", triggerInit);
+		setTimeout(triggerInit, 4000);
 	}
 
 	runAfterPreloader(initServicesPage);

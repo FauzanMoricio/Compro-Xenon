@@ -658,14 +658,25 @@ import SubNavbar from "../components/common/SubNavbar.astro";
 		}, 1500);
 	}
 
-	if (
-		document.readyState === "complete" ||
-		document.readyState === "interactive"
-	) {
-		initAnimation();
-	} else {
-		window.addEventListener("load", initAnimation);
+	function runAfterPreloader(initFunc: () => void) {
+		const preloader = document.getElementById("global-preloader");
+		if (!preloader || preloader.style.display === "none") {
+			initFunc();
+			return;
+		}
+
+		let initialized = false;
+		const triggerInit = () => {
+			if (initialized) return;
+			initialized = true;
+			initFunc();
+		};
+
+		window.addEventListener("preloaderComplete", triggerInit);
+		setTimeout(triggerInit, 4000);
 	}
+
+	runAfterPreloader(initAnimation);
 </script>
 
 <style>
