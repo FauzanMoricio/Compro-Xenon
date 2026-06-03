@@ -205,7 +205,12 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  let heroInitialized = false;
+
   const initHeroAnimation = () => {
+    if (heroInitialized) return;
+    heroInitialized = true;
+
     // Reveal title once script loads
     const title: HTMLElement | null = document.querySelector(".hero-title");
     if (title) title.style.visibility = "visible";
