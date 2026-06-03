@@ -689,9 +689,28 @@ const bentoImages = [
 		});
 	}
 
-	if (document.readyState === "complete" || document.readyState === "interactive") {
-		initServicesPage();
-	} else {
-		window.addEventListener("load", initServicesPage);
+	function runAfterPreloader(initFunc: () => void) {
+		let initialized = false;
+		const triggerInit = () => {
+			if (initialized) return;
+			initialized = true;
+			initFunc();
+		};
+
+		if (sessionStorage.getItem("compro_visited") === "true") {
+			if (
+				document.readyState === "complete" ||
+				document.readyState === "interactive"
+			) {
+				setTimeout(triggerInit, 100);
+			} else {
+				window.addEventListener("load", triggerInit);
+			}
+		} else {
+			window.addEventListener("preloaderComplete", triggerInit);
+			setTimeout(triggerInit, 4000);
+		}
 	}
+
+	runAfterPreloader(initServicesPage);
 </script>

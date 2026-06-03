@@ -472,9 +472,30 @@ import { ArrowRight, CheckCircle2, Cpu, BarChart3 } from 'lucide-astro';
 		ScrollTrigger.refresh();
 	}
 
-	window.addEventListener('load', () => {
-		setTimeout(initPortfolio, 300);
-	});
+	function runAfterPreloader(initFunc: () => void) {
+		let initialized = false;
+		const triggerInit = () => {
+			if (initialized) return;
+			initialized = true;
+			setTimeout(initFunc, 300);
+		};
+
+		if (sessionStorage.getItem("compro_visited") === "true") {
+			if (
+				document.readyState === "complete" ||
+				document.readyState === "interactive"
+			) {
+				setTimeout(triggerInit, 100);
+			} else {
+				window.addEventListener("load", triggerInit);
+			}
+		} else {
+			window.addEventListener("preloaderComplete", triggerInit);
+			setTimeout(triggerInit, 4000);
+		}
+	}
+
+	runAfterPreloader(initPortfolio);
 </script>
 
 
